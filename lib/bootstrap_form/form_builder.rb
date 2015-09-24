@@ -273,6 +273,7 @@ module BootstrapForm
     def required_attribute?(obj, attribute)
 
       return false unless obj and attribute
+      return obj.attribute_required?(attribute.to_sym) if obj.respond_to?(:attribute_required?)
 
       target = (obj.class == Class) ? obj : obj.class
 
