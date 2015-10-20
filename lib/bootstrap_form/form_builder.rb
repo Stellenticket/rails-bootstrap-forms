@@ -350,7 +350,7 @@ module BootstrapForm
     end
 
     def generate_label(id, name, options, custom_label_col, group_layout, required)
-      options[:for] = id if acts_like_form_tag
+      options[:for] ||= id unless id.blank?
       classes = [options[:class], label_class]
       classes << (custom_label_col || label_col) if get_group_layout(group_layout) == :horizontal
       classes << "required" if required_attribute?(object, name) || required
