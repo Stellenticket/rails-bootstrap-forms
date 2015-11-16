@@ -188,7 +188,7 @@ module BootstrapForm
       options[:class] = ["form-group", options[:class]].compact.join(' ')
       options[:class] << " #{error_class}" if has_error?(name)
       options[:class] << " #{feedback_class}" if options[:icon]
-      options[:class] << " required" if required_attribute?(object, name) || options[:required]
+      options[:class] << " required" if required_attribute?(object, name, options[:required])
 
       content_tag(:div, options.except(:id, :label, :help, :icon, :label_col, :control_col, :layout)) do
         label = generate_label(options[:id], name, options[:label], options[:label_col], options[:layout], options[:required]) if options[:label]
@@ -271,8 +271,9 @@ module BootstrapForm
       object.respond_to?(:errors) && !(name.nil? || object.errors[name].empty?)
     end
 
-    def required_attribute?(obj, attribute)
+    def required_attribute?(obj, attribute, explicit_required = nil)
 
+      return explicit_required unless explicit_required.nil?
       return false unless obj and attribute
       return obj.attribute_required?(attribute.to_sym) if obj.respond_to?(:attribute_required?)
 
@@ -353,7 +354,7 @@ module BootstrapForm
       options[:for] ||= id unless id.blank?
       classes = [options[:class], label_class]
       classes << (custom_label_col || label_col) if get_group_layout(group_layout) == :horizontal
-      classes << "required" if required_attribute?(object, name) || required
+      classes << "required" if required_attribute?(object, name, required)
 
       options[:class] = classes.compact.join(" ")
 
