@@ -322,7 +322,7 @@ module BootstrapForm
         control_col: control_col,
         layout: layout,
         class: wrapper_class,
-        required: options[:required]
+        required: css_options[:required]
       }
 
       if wrapper_options.is_a?(Hash)
